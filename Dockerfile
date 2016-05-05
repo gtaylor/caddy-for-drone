@@ -12,6 +12,8 @@ ADD caddy dynamic-caddy /usr/bin/
 RUN chmod 0755 /usr/bin/caddy && chmod 0755 /usr/bin/dynamic-caddy \
  && sync && /usr/bin/caddy -version
 
+RUN apk add --update ca-certificates
+
 EXPOSE 80 443 2015
 WORKDIR /srv
 # Generates a /etc/Caddyfile from env vars, then fires caddy up.

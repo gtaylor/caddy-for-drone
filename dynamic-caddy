@@ -25,7 +25,6 @@ fi
 echo """
 ${PROXY_HOSTNAME} {
     proxy / ${UPSTREAM} {
-        tls ${LETSENCRYPT_EMAIL}
         proxy_header X-Forwarded-Proto {scheme}
         proxy_header X-Forwarded-For {host}
         proxy_header Host {host}
@@ -34,4 +33,4 @@ ${PROXY_HOSTNAME} {
 """ > /etc/Caddyfile
 
 # Fire ze missiles.
-/usr/bin/caddy
+/usr/bin/caddy -conf /etc/Caddyfile -log stdout -email ${LETSENCRYPT_EMAIL}
