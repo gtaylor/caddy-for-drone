@@ -1,0 +1,31 @@
+#!/bin/sh
+# Dynamically generates /etc/Caddyfile from environment variables.
+#
+# Required Env vars:
+# PROXY_HOSTNAME: A FQDN to generate certs for and to listen on.
+# LETSENCRYPT_EMAIL: Valid email address to pass on to Lets Encrypt.
+#
+
+if [ -z "$PROXY_HOSTNAME" ]; then
+    echo "The PROXY_HOSTNAME environment variable has not been set."
+    exit 1
+fi
+
+if [ -z "$LETSENCRYPT_EMAIL" ]; then
+    echo "The LETSENCRYPT_EMAIL environment variable has not been set."
+    exit 1
+fi
+
+echo """
+${PROXY_HOSTNAME} {
+    proxy / drone-server:80 {
+        tls ${LETSENCRYPT_EMAIL}
+        proxy_header X-Forwarded-Proto {scheme}
+        proxy_header X-Forwarded-For {host}
+        proxy_header Host {host}
+    }
+}
+""" > /etc/Caddyfile
+
+# Fire ze missiles.
+/usr/bin/caddy
