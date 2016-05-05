@@ -4,6 +4,7 @@
 # Required Env vars:
 # PROXY_HOSTNAME: A FQDN to generate certs for and to listen on.
 # LETSENCRYPT_EMAIL: Valid email address to pass on to Lets Encrypt.
+# UPSTREAM: A proxy upstream. <hostname or ip>:<port>
 #
 
 if [ -z "$PROXY_HOSTNAME" ]; then
@@ -16,9 +17,14 @@ if [ -z "$LETSENCRYPT_EMAIL" ]; then
     exit 1
 fi
 
+if [ -z "$UPSTREAM" ]; then
+    echo "The UPSTREAM environment variable has not been set."
+    exit 1
+fi
+
 echo """
 ${PROXY_HOSTNAME} {
-    proxy / drone-server:80 {
+    proxy / ${UPSTREAM} {
         tls ${LETSENCRYPT_EMAIL}
         proxy_header X-Forwarded-Proto {scheme}
         proxy_header X-Forwarded-For {host}

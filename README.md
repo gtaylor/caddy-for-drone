@@ -26,17 +26,29 @@ valid email address to ensure that this feature works correctly for you.
 
 ## Usage
 
-To run this image, adapt the values for `PROXY_HOSTNAME` and
-`LETSENCRYPT_EMAIL` below and run something like:
+To run this image, adapt the values for `PROXY_HOSTNAME`,
+`LETSENCRYPT_EMAIL`, and `UPSTREAM` below and run something like:
 
 ```sh
 docker run -d \
     -e PROXY_HOSTNAME=your.fqdn.here \
     -e LETSENCRYPT_EMAIL=your@email.com \
+    -e UPSTREAM=drone-server:80 \
     -p 80:80 \
     -p 443:443 \
     gtaylor/caddy
 ```
+
+## Environment Variable Reference
+
+`PROXY_HOSTNAME` is a FQDN for the site you are proxying. Your SSL
+cert will match this value.
+
+`LETSENCRYPT_EMAIL` is something that Let's Encrypt asks for. Pass in a valid
+email here. We've never been bothered by them after setting this, FWIW.
+
+`UPSTREAM` In the form of `<hostname or ip>:<port>`. This should point to
+the upstream Drone instance's *http* port.
 
 ## License
 
