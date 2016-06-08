@@ -34,4 +34,4 @@ ${PROXY_HOSTNAME} {
 """ > /etc/Caddyfile
 
 # Fire ze missiles.
-/usr/bin/caddy -conf /etc/Caddyfile -log stdout -email ${LETSENCRYPT_EMAIL}
+/usr/bin/caddy -conf /etc/Caddyfile -http2=false -log stdout -email ${LETSENCRYPT_EMAIL}
