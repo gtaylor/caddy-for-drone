@@ -25,6 +25,7 @@ fi
 echo """
 ${PROXY_HOSTNAME} {
     proxy / ${UPSTREAM} {
+        websocket
         proxy_header X-Forwarded-Proto {scheme}
         proxy_header X-Forwarded-For {host}
         proxy_header Host {host}
